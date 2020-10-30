@@ -19,13 +19,18 @@ open class LynNet {
         var request = srcRequest
         for plugin in request.requestPlugins {
             request = plugin.beforeRequest(srcRequest)
+            if let result = request.terminate {
+                completion(result)
+                return nil
+            }
         }
         let internalRequest: InternalRequest = InternalRequest(baseUrl: request.baseUrl,
-                                                           path: request.path,
-                                                           method: request.method,
-                                                           parameters: request.parameters,
-                                                           headers: request.headers,
-                                                           isStream: request.isStream)
+                                                               path: request.path,
+                                                               method: request.method,
+                                                               parameters: request.parameters,
+                                                               headers: request.headers,
+                                                               isStream: request.isStream,
+                                                               ext: request.ext)
         guard let urlRequest = internalRequest.urlRequest else {
             let e = NetError(msg: "InternalRequest convert error!", code: .protocol)
             completion(.failure(e))
@@ -42,6 +47,10 @@ open class LynNet {
             var result: Result<Data?, NetError> = .success(data)
             for plugin in request.responsePlugins {
                 result = plugin.afterResponse(result)
+                if let result = request.terminate {
+                    completion(result)
+                    return
+                }
             }
             completion(result)
         }

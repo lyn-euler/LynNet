@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Requestable {
+public protocol Requestable: PluginParameters {
     var baseUrl: String { get }
     var path: String { get }
     var method: HttpMethod { get }
@@ -17,6 +17,15 @@ public protocol Requestable {
     var responsePlugins: [ResponsePlugin] { get }
     var timeout: TimeInterval { get }
     var isStream: Bool { get }
+}
+
+public protocol PluginParameters {
+    /// extension info for plugins.
+    /// For example, you can set cache enable flag to open/close cache in ResponsePlugin.
+    var ext: [String: Any]? { get }
+    
+    /// terminate right now, if terminate is not nil.
+    var terminate: Result<Data?, NetError>? { get }
 }
 
 public protocol RequestPlugin {
@@ -40,11 +49,11 @@ public enum HttpMethod: String {
     case delete = "DELETE"
 }
 
-
-
 public extension Requestable {
     var timeout: TimeInterval { 10 * 1000 }
     var isStream: Bool { false }
+    var ext: [String: Any]? { nil }
+    var terminate: Result<Data?, NetError>? { nil }
 }
 
 protocol InternalRequestable: Requestable {
@@ -104,6 +113,8 @@ struct InternalRequest: InternalRequestable {
     var responsePlugins: [ResponsePlugin] { [] }
     
     let isStream: Bool
+    
+    var ext: [String : Any]?
     
 }
 
