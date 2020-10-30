@@ -19,7 +19,7 @@ open class LynNet {
         var request = srcRequest
         for plugin in request.requestPlugins {
             request = plugin.beforeRequest(srcRequest)
-            if let result = request.terminate {
+            if let result = plugin.terminate() {
                 completion(result)
                 return nil
             }
@@ -46,9 +46,9 @@ open class LynNet {
             }
             var result: Result<Data?, NetError> = .success(data)
             for plugin in request.responsePlugins {
-                result = plugin.afterResponse(result)
-                if let result = request.terminate {
-                    completion(result)
+                result = plugin.afterResponse(internalRequest, result)
+                if let r = plugin.terminate() {
+                    completion(r)
                     return
                 }
             }

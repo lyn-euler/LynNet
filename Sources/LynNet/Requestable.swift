@@ -24,17 +24,25 @@ public protocol PluginParameters {
     /// For example, you can set cache enable flag to open/close cache in ResponsePlugin.
     var ext: [String: Any]? { get }
     
-    /// terminate right now, if terminate is not nil.
-    var terminate: Result<Data?, NetError>? { get }
+//    /// terminate right now, if terminate is not nil.
+//    var terminate: Result<Data?, NetError>? { get }
 }
 
-public protocol RequestPlugin {
+public protocol Terminatable {
+    func terminate() -> Result<Data?, NetError>?
+}
+
+public extension Terminatable {
+    func terminate() -> Result<Data?, NetError>? { nil }
+}
+
+public protocol RequestPlugin: Terminatable {
     func beforeRequest(_ request: Requestable) -> Requestable
-    
 }
 
-public protocol ResponsePlugin {
-     func afterResponse(_ result: Result<Data?, NetError>) -> Result<Data?, NetError>
+
+public protocol ResponsePlugin: Terminatable {
+    func afterResponse(_ request: Requestable, _ result: Result<Data?, NetError>) -> Result<Data?, NetError>
 }
 
 //protocol DataDecoder {
@@ -53,7 +61,6 @@ public extension Requestable {
     var timeout: TimeInterval { 10 * 1000 }
     var isStream: Bool { false }
     var ext: [String: Any]? { nil }
-    var terminate: Result<Data?, NetError>? { nil }
 }
 
 protocol InternalRequestable: Requestable {
