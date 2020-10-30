@@ -10,7 +10,8 @@ import Foundation
 import LynNet
 
 struct LogPlugin: ResponsePlugin {
-    func afterResponse(_ result: Result<Data?, NetError>) -> Result<Data?, NetError> {
+    
+    func afterResponse(_ request: Requestable, _ result: Result<Data?, NetError>) -> Result<Data?, NetError> {
         if case let .success(data) = result {
             guard let d = data else {
                 return result

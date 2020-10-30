@@ -24,8 +24,6 @@ public protocol PluginParameters {
     /// For example, you can set cache enable flag to open/close cache in ResponsePlugin.
     var ext: [String: Any]? { get }
     
-//    /// terminate right now, if terminate is not nil.
-//    var terminate: Result<Data?, NetError>? { get }
 }
 
 public protocol Terminatable {
@@ -45,9 +43,6 @@ public protocol ResponsePlugin: Terminatable {
     func afterResponse(_ request: Requestable, _ result: Result<Data?, NetError>) -> Result<Data?, NetError>
 }
 
-//protocol DataDecoder {
-//    func decode<T>(_ data: Data?) throws -> Result<T?, NetError>
-//}
 
 public enum HttpMethod: String {
     case get = "GET"
@@ -65,7 +60,6 @@ public extension Requestable {
 
 protocol InternalRequestable: Requestable {
     var urlRequest: URLRequest? { get }
-    
 }
 
 struct InternalRequest: InternalRequestable {
