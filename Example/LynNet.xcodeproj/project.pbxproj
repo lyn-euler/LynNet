@@ -17,8 +17,9 @@
 		7EA544A0F7D0B1C48727BAB8 /* Pods_LynNet_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCBEA5CE5F63481698D33B7 /* Pods_LynNet_Example.framework */; };
 		B89FA7AE254BB2660065BF87 /* LynNetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89FA7AB254BB2660065BF87 /* LynNetTests.swift */; };
 		B89FA7AF254BB2660065BF87 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89FA7AC254BB2660065BF87 /* XCTestManifests.swift */; };
-		B89FA7BC254BB88D0065BF87 /* GetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89FA7BB254BB88D0065BF87 /* GetRequest.swift */; };
+		B89FA7BC254BB88D0065BF87 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89FA7BB254BB88D0065BF87 /* Requests.swift */; };
 		B89FA7C0254BB8B40065BF87 /* LogPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89FA7BF254BB8B40065BF87 /* LogPlugin.swift */; };
+		B89FA7CC254BE2D20065BF87 /* TestRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89FA7CB254BE2D20065BF87 /* TestRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +52,9 @@
 		B0A5D5986BAE08756045777A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B89FA7AB254BB2660065BF87 /* LynNetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LynNetTests.swift; sourceTree = "<group>"; };
 		B89FA7AC254BB2660065BF87 /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		B89FA7BB254BB88D0065BF87 /* GetRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRequest.swift; sourceTree = "<group>"; };
+		B89FA7BB254BB88D0065BF87 /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		B89FA7BF254BB8B40065BF87 /* LogPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogPlugin.swift; sourceTree = "<group>"; };
+		B89FA7CB254BE2D20065BF87 /* TestRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRequest.swift; sourceTree = "<group>"; };
 		C96EF595E0E4DE3307F2DD97 /* Pods-LynNet_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LynNet_Example.debug.xcconfig"; path = "Target Support Files/Pods-LynNet_Example/Pods-LynNet_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D0B4C95EE655C8B17CD3BD21 /* Pods-LynNet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LynNet_Example.release.xcconfig"; path = "Target Support Files/Pods-LynNet_Example/Pods-LynNet_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -171,7 +173,8 @@
 			children = (
 				B89FA7AB254BB2660065BF87 /* LynNetTests.swift */,
 				B89FA7AC254BB2660065BF87 /* XCTestManifests.swift */,
-				B89FA7BB254BB88D0065BF87 /* GetRequest.swift */,
+				B89FA7BB254BB88D0065BF87 /* Requests.swift */,
+				B89FA7CB254BE2D20065BF87 /* TestRequest.swift */,
 				B89FA7BF254BB8B40065BF87 /* LogPlugin.swift */,
 			);
 			path = LynNetTests;
@@ -369,9 +372,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B89FA7BC254BB88D0065BF87 /* GetRequest.swift in Sources */,
+				B89FA7BC254BB88D0065BF87 /* Requests.swift in Sources */,
 				B89FA7AE254BB2660065BF87 /* LynNetTests.swift in Sources */,
 				B89FA7C0254BB8B40065BF87 /* LogPlugin.swift in Sources */,
+				B89FA7CC254BE2D20065BF87 /* TestRequest.swift in Sources */,
 				B89FA7AF254BB2660065BF87 /* XCTestManifests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 			);

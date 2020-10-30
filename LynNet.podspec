@@ -32,6 +32,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.0'
 
   s.source_files = 'Sources/LynNet/**/*'
+  s.swift_version = '5.0'
   
   # s.resource_bundles = {
   #   'LynNet' => ['LynNet/Assets/*.png']

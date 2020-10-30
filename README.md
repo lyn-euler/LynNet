@@ -13,12 +13,13 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-LynNet is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+LynNet is available through [CocoaPods](https://cocoapods.org) and [Swift Package Manager](https://swift.org/package-manager/).
+For example, to install it use pod, simply add the following line to your Podfile:
 
 ```ruby
 pod 'LynNet'
 ```
+
 
 ## Author
 

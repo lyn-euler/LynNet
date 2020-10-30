@@ -1,6 +1,12 @@
 import XCTest
 @testable import LynNet
 
+
+/// ⚠️NOTE: you must run a node server before testing
+/// ```shell
+/// # file path at 'Tests/server'
+/// node server.js
+///```
 final class LynNetTests: XCTestCase {
     func testGet() {
         // This is an example of a functional test case.
