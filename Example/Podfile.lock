@@ -1,0 +1,16 @@
+PODS:
+  - LynNet (0.1.0)
+
+DEPENDENCIES:
+  - LynNet (from `../`)
+
+EXTERNAL SOURCES:
+  LynNet:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  LynNet: d771c44f6d9ff7c8eec1dc67402cc267f4c7e2a2
+
+PODFILE CHECKSUM: 540f764036d884daf566169802a3104cb3751b5a
+
+COCOAPODS: 1.9.3

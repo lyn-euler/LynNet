@@ -13,19 +13,19 @@ open class LynNet {
     ///   - completion: 回调
     /// - Returns: task
     @discardableResult
-    public static func request(_ request: Requestable,
+    public static func request(_ srcRequest: Requestable,
                                _ completion: @escaping  NetworkCompletion<Data>) -> URLSessionTask? {
-        var internalRequest: Requestable = InternalRequest(baseUrl: request.baseUrl,
+        
+        var request = srcRequest
+        for plugin in request.requestPlugins {
+            request = plugin.beforeRequest(srcRequest)
+        }
+        let internalRequest: InternalRequest = InternalRequest(baseUrl: request.baseUrl,
                                                            path: request.path,
                                                            method: request.method,
                                                            parameters: request.parameters,
                                                            headers: request.headers,
                                                            isStream: request.isStream)
-        
-        
-        for plugin in request.requestPlugins {
-            internalRequest = plugin.beforeRequest(internalRequest)
-        }
         guard let urlRequest = internalRequest.urlRequest else {
             let e = NetError(msg: "InternalRequest convert error!", code: .protocol)
             completion(.failure(e))
@@ -61,6 +61,11 @@ extension Requestable {
             
             var request = URLRequest(url: url)
             request.httpMethod = method.rawValue
+            if let httpHeaders = headers {
+                for (key, val) in httpHeaders {
+                    request.setValue(val, forHTTPHeaderField: key)
+                }
+            }
             if method == .get {
                 // todo:
             }else if let param = parameters, let data = json2Data(param) {

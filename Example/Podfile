@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'LynNet_Example' do
+  pod 'LynNet', :path => '../'
+
+  target 'LynNet_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

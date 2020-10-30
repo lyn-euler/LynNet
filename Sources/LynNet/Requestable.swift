@@ -42,7 +42,7 @@ public enum HttpMethod: String {
 
 
 
-extension Requestable {
+public extension Requestable {
     var timeout: TimeInterval { 10 * 1000 }
     var isStream: Bool { false }
 }

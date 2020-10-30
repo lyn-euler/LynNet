@@ -3,3 +3,5 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
+Example/Pods
+Tests/api-server/node_modules
