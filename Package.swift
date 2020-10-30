@@ -20,10 +20,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LynNet",
-            dependencies: []),
+            dependencies: [],
+            exclude: ["Example"]),
         .testTarget(
             name: "LynNetTests",
             dependencies: ["LynNet"]),
-    ],
-    exclude: ["Example"]
+    ]
+    
 )
