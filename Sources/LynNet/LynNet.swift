@@ -1,27 +1,64 @@
 
 import Foundation
 
-public typealias NetworkCompletion<T> = (Result<T?, NetError>) -> Void
+public typealias NetworkCompletion = (LynNetResult<Any>) -> Void
 
+public struct LynNetResult<T> {
+    public let reserve: T?
+    public let result: Result<Data?, NetError>
+    init(_ result: Result<Data?, NetError>, reserve: T? = nil) {
+        self.result = result
+        self.reserve = reserve
+    }
+}
 
+public protocol Cancelable {
+    func cancel()
+}
+
+private class NetTask: Cancelable {
+    func cancel() {
+        guard let t = task else { return  }
+        t.cancel()
+    }
+    
+    var task: URLSessionTask?
+}
 
 open class LynNet {
+    
+    /// 请求网络数据
+    /// - Parameters:
+    ///   - srcRequest: 请求模型
+    ///   - completion: 回调
+    /// - Returns: NetTask
+    @discardableResult
+    public static func asyncRequest(_ srcRequest: Requestable,
+                                    _ completion: @escaping  NetworkCompletion) -> Cancelable {
+        let task = NetTask()
+        DispatchQueue.global(qos: .default).async {
+            if let netTask = request(srcRequest, completion) as? NetTask {
+                task.task = netTask.task
+            }
+        }
+        return task
+    }
     
     /// ### 请求网络数据
     /// - Parameters:
     ///   - request: 请求模型
     ///   - completion: 回调
-    /// - Returns: task
+    /// - Returns: NetTask
     @discardableResult
     public static func request(_ srcRequest: Requestable,
-                               _ completion: @escaping  NetworkCompletion<Data>) -> URLSessionTask? {
-        
+                               _ completion: @escaping  NetworkCompletion) -> Cancelable {
+        let cancelable = NetTask()
         var request = srcRequest
         for plugin in request.requestPlugins {
             request = plugin.beforeRequest(srcRequest)
             if let result = plugin.terminate() {
                 completion(result)
-                return nil
+                return cancelable
             }
         }
         let internalRequest: InternalRequest = InternalRequest(baseUrl: request.baseUrl,
@@ -32,30 +69,34 @@ open class LynNet {
                                                                isStream: request.isStream,
                                                                ext: request.ext)
         guard let urlRequest = internalRequest.urlRequest else {
-            let e = NetError(msg: "InternalRequest convert error!", code: .protocol)
-            completion(.failure(e))
-            return nil
+            let e = NetError(msg: "[LynNet]::InternalRequest convert error!", code: .protocol)
+            completion(LynNetResult(.failure(e)))
+            return cancelable
         }
-        
+
         URLSession.shared.configuration.httpAdditionalHeaders = request.headers
         let task: URLSessionTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            var result: LynNetResult<Any>
             if let err = error {
                 let e = NetError(msg: err.localizedDescription, code: .protocol)
-                completion(.failure(e))
-                return
+                result = LynNetResult(.failure(e))
+            }else {
+                let r: Result<Data?, NetError> = .success(data)
+                result = LynNetResult<Any>(r)
             }
-            var result: Result<Data?, NetError> = .success(data)
+            
             for plugin in request.responsePlugins {
                 result = plugin.afterResponse(internalRequest, result)
                 if let r = plugin.terminate() {
-                    completion(r)
-                    return
+                    result = r
+                    break;
                 }
             }
             completion(result)
         }
+        cancelable.task = task
         task.resume()
-        return task
+        return cancelable
     }
     
 }

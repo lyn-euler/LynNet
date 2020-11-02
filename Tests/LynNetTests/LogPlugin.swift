@@ -11,8 +11,8 @@ import LynNet
 
 struct LogPlugin: ResponsePlugin {
     
-    func afterResponse(_ request: Requestable, _ result: Result<Data?, NetError>) -> Result<Data?, NetError> {
-        if case let .success(data) = result {
+    func afterResponse(_ request: Requestable, _ result: LynNetResult<Any>) -> LynNetResult<Any> {
+        if case let .success(data) = result.result {
             guard let d = data else {
                 return result
             }

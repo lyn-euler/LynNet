@@ -13,9 +13,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        LynNet.request(GetRequest()) { result in
-            
-        }
+//        LynNet.request(GetRequest()) { result in
+//            
+//        }
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -27,9 +27,9 @@ class ViewController: UIViewController {
 }
 
 struct GetRequest: Requestable {
-    var baseUrl: String = ""
+    var baseUrl: String = "https://localhost:3000"
     
-    var path: String = ""
+    var path: String = "/get"
     
     var method: HttpMethod = .get
     

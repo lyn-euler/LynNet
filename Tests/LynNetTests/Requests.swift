@@ -16,7 +16,7 @@ struct GetTestRequest: TestRequest {
     
     let method: HttpMethod = .get
     
-    var parameters: Dictionary<String, Any>? = ["test": "this is a get request!"]
+    var parameters: Dictionary<String, Any>? = ["test": "this is a get request!", "aa": 111]
     
 }
 
@@ -29,5 +29,4 @@ struct PostTestRequest: TestRequest {
     
     var parameters: Dictionary<String, Any>? = ["message": "this is a post request!"]
 
-    
 }

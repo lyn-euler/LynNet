@@ -27,11 +27,11 @@ public protocol PluginParameters {
 }
 
 public protocol Terminatable {
-    func terminate() -> Result<Data?, NetError>?
+    func terminate() -> LynNetResult<Any>?
 }
 
 public extension Terminatable {
-    func terminate() -> Result<Data?, NetError>? { nil }
+    func terminate<T>() -> LynNetResult<T>? { nil }
 }
 
 public protocol RequestPlugin: Terminatable {
@@ -40,7 +40,7 @@ public protocol RequestPlugin: Terminatable {
 
 
 public protocol ResponsePlugin: Terminatable {
-    func afterResponse(_ request: Requestable, _ result: Result<Data?, NetError>) -> Result<Data?, NetError>
+    func afterResponse(_ request: Requestable, _ result: LynNetResult<Any>) -> LynNetResult<Any>
 }
 
 
@@ -71,10 +71,14 @@ struct InternalRequest: InternalRequestable {
         var request: URLRequest?
         if method == .get {
             let noQuery = url.query == nil
+            var andSymbol = noQuery ? "": "&"
             let paramString = parameters?.reduce( noQuery ? "?" : "", { (result, arg1) -> String in
+                defer {
+                    andSymbol = "&"
+                }
                 let (key, value) = arg1
-                let item = "\(key)=" + "\(value)"
-                return "\(result)\(item)&"
+                let item = "\(key)=" + "\(value)".urlEncode()
+                return "\(result)\(andSymbol)\(item)"
             }) ?? ""
             let urlString = "\(baseUrl)\(path)\(paramString)"
             if let url = URL(string: urlString) {
@@ -128,3 +132,8 @@ extension InternalRequest {
 }
 
 
+extension String {
+    func urlEncode() -> Self {
+        return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+    }
+}

@@ -14,10 +14,10 @@ final class LynNetTests: XCTestCase {
         // results.
 //        XCTAssertEqual(LynNet().text, "Hello, World!")
         let exp = self.expectation(description: "test get")
-        LynNet.request(GetTestRequest()) { (result) in
-            if case .success(_) = result {
+        LynNet.asyncRequest(GetTestRequest()) { (result) in
+            if case .success(_) = result.result {
                 exp.fulfill()
-            }else if case let .failure(error) = result {
+            }else if case let .failure(error) = result.result {
                 print(error.msg)
             }else {
                 XCTAssert(false, "error!")
@@ -34,10 +34,10 @@ final class LynNetTests: XCTestCase {
     
     func testPost() {
         let exp = self.expectation(description: "test post")
-        LynNet.request(PostTestRequest()) { (result) in
-            if case .success(_) = result {
+        LynNet.asyncRequest(PostTestRequest()) { (result) in
+            if case .success(_) = result.result {
                 exp.fulfill()
-            }else if case let .failure(error) = result {
+            }else if case let .failure(error) = result.result {
                 print(error.msg)
             }else {
                 XCTAssert(false, "error!")
