@@ -7,7 +7,7 @@ public typealias NetworkCompletion = (LynNetResult) -> Void
 public struct ResultModel<T> {
     public let reserve: T?
     public let result: Result<Data?, NetError>
-    init(_ result: Result<Data?, NetError>, reserve: Any? = nil) {
+    public init(_ result: Result<Data?, NetError>, reserve: Any? = nil) {
         self.result = result
         self.reserve = reserve as? T
     }
