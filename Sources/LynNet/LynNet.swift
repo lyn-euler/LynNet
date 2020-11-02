@@ -34,7 +34,7 @@ open class LynNet {
     /// - Returns: NetTask
     @discardableResult
     public static func asyncRequest(_ srcRequest: Requestable,
-                                    _ completion: @escaping  NetworkCompletion) -> Cancelable {
+                                    _ completion: @escaping NetworkCompletion) -> Cancelable {
         let task = NetTask()
         DispatchQueue.global(qos: .default).async {
             if let netTask = request(srcRequest, completion) as? NetTask {
@@ -56,8 +56,11 @@ open class LynNet {
         var request = srcRequest
         for plugin in request.requestPlugins {
             request = plugin.beforeRequest(srcRequest)
-            if let result = plugin.terminate() {
-                completion(result)
+            let r = plugin.terminate()
+            if r.0 {
+                if let result = r.1 {
+                    completion(result)
+                }
                 return cancelable
             }
         }
@@ -87,9 +90,12 @@ open class LynNet {
             
             for plugin in request.responsePlugins {
                 result = plugin.afterResponse(internalRequest, result)
-                if let r = plugin.terminate() {
-                    result = r
-                    break;
+                let r = plugin.terminate()
+                if r.0 {
+                    if let result = r.1 {
+                        completion(result)
+                    }
+                    return
                 }
             }
             completion(result)
