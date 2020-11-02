@@ -6,8 +6,8 @@
 //
 
 public struct NetError: Error {
-    let msg: String
-    let code: ErrorCode
+    public let msg: String
+    public let code: ErrorCode
 }
 
 public enum ErrorCode {
