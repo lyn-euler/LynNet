@@ -1,9 +1,10 @@
 
 import Foundation
 
-public typealias NetworkCompletion = (LynNetResult<Any>) -> Void
+public typealias LynNetResult = ResultModel<[String: Any]>
+public typealias NetworkCompletion = (LynNetResult) -> Void
 
-public struct LynNetResult<T> {
+public struct ResultModel<T> {
     public let reserve: T?
     public let result: Result<Data?, NetError>
     init(_ result: Result<Data?, NetError>, reserve: T? = nil) {
@@ -11,6 +12,8 @@ public struct LynNetResult<T> {
         self.reserve = reserve
     }
 }
+
+
 
 public protocol Cancelable {
     func cancel()
@@ -79,13 +82,13 @@ open class LynNet {
 
         URLSession.shared.configuration.httpAdditionalHeaders = request.headers
         let task: URLSessionTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            var result: LynNetResult<Any>
+            var result: LynNetResult
             if let err = error {
                 let e = NetError(msg: err.localizedDescription, code: .protocol)
                 result = LynNetResult(.failure(e))
             }else {
                 let r: Result<Data?, NetError> = .success(data)
-                result = LynNetResult<Any>(r)
+                result = LynNetResult(r)
             }
             
             for plugin in request.responsePlugins {

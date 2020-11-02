@@ -29,11 +29,11 @@ public protocol PluginParameters {
 public protocol Terminatable {
     
     /// 终止请求 (是否终止、结果--如果有则执行回调,nil则不执行回调)
-    func terminate() -> (Bool, LynNetResult<Any>?)
+    func terminate() -> (Bool, LynNetResult?)
 }
 
 public extension Terminatable {
-    func terminate() -> (Bool, LynNetResult<Any>?) { (false, nil) }
+    func terminate() -> (Bool, LynNetResult?) { (false, nil) }
 }
 
 public protocol RequestPlugin: Terminatable {
@@ -42,7 +42,7 @@ public protocol RequestPlugin: Terminatable {
 
 
 public protocol ResponsePlugin: Terminatable {
-    func afterResponse(_ request: Requestable, _ result: LynNetResult<Any>) -> LynNetResult<Any>
+    func afterResponse(_ request: Requestable, _ result: LynNetResult) -> LynNetResult
 }
 
 
