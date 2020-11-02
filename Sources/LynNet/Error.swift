@@ -8,6 +8,10 @@
 public struct NetError: Error {
     public let msg: String
     public let code: ErrorCode
+    public init(msg: String, code: ErrorCode = .default) {
+        self.msg = msg
+        self.code = code
+    }
 }
 
 public enum ErrorCode {
