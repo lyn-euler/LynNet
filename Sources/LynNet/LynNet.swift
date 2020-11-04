@@ -60,10 +60,10 @@ open class LynNet {
         for plugin in request.requestPlugins {
             request = plugin.beforeRequest(srcRequest)
             let r = plugin.terminate()
+            if let result = r.1 {
+                completion(result)
+            }
             if r.0 {
-                if let result = r.1 {
-                    completion(result)
-                }
                 return cancelable
             }
         }
