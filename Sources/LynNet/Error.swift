@@ -8,9 +8,14 @@
 public struct NetError: Error {
     public let msg: String
     public let code: ErrorCode
-    public init(msg: String, code: ErrorCode = .default) {
+    
+    /// 扩展字段, 额外信息
+    public let ext: Any?
+    
+    public init(msg: String, code: ErrorCode = .default, ext: Any? = nil) {
         self.msg = msg
         self.code = code
+        self.ext = ext
     }
 }
 

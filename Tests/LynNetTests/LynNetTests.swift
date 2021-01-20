@@ -1,4 +1,5 @@
 import XCTest
+import Foundation
 @testable import LynNet
 
 
@@ -8,6 +9,8 @@ import XCTest
 /// node server.js
 ///```
 final class LynNetTests: XCTestCase {
+    
+    
     func testGet() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct

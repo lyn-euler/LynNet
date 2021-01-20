@@ -73,26 +73,20 @@ struct InternalRequest: InternalRequestable {
         var request: URLRequest?
         if method == .get {
             let noQuery = url.query == nil
-            var andSymbol = noQuery ? "": "&"
-            let paramString = parameters?.reduce( noQuery ? "?" : "", { (result, arg1) -> String in
-                defer {
-                    andSymbol = "&"
-                }
-                let (key, value) = arg1
-                let item = "\(key)=" + "\(value)".urlEncode()
-                return "\(result)\(andSymbol)\(item)"
-            }) ?? ""
+            let paramString = (noQuery ? "?" : "&") + (parameters?.toQuery ?? "")
             let urlString = "\(baseUrl)\(path)\(paramString)"
             if let url = URL(string: urlString) {
                 request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeout)
             }
         }else {
             request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeout)
-            if let param = parameters, let data = json2Data(param) {
+            if let query = parameters?.toQuery, let data = query.data(using: .utf8) {//, let data = json2Data(param)
+                
 //                if self.isStream {
-                    request?.httpBodyStream = InputStream(data: data)
+//                    request?.httpBodyStream = InputStream(data: data)
 //                }else {
-//                request?.httpBody = data
+                
+                request?.httpBody = data
 //                }
             }
         }
@@ -137,5 +131,19 @@ extension InternalRequest {
 extension String {
     func urlEncode() -> Self {
         return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+    }
+}
+
+extension Dictionary where Key == String {
+    var toQuery: String {
+        var andSymbol = ""
+        return self.reduce("", { (result, arg1) -> String in
+            defer {
+                andSymbol = "&"
+            }
+            let (key, value) = arg1
+            let item = "\(key)=" + "\(value)".urlEncode()
+            return "\(result)\(andSymbol)\(item)"
+        })
     }
 }
